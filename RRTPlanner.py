@@ -37,11 +37,15 @@ class RRTPlanner(object):
             else:
                 validSample_id = tree.AddVertex(validSample)
                 tree.AddEdge(best_id ,validSample_id)
+                if self.visualize:
+                    self.planning_env.PlotEdge(best_v, validSample)
 
                 # Termination Condition
                 if self.planning_env.ComputeDistance(validSample, goal_config) < epsilon:
                     goal_id = tree.AddVertex(goal_config)
                     tree.AddEdge(validSample_id, goal_id)
+                    if self.visualize:
+                        self.planning_env.PlotEdge(best_v, validSample)
                     FAR = False
 
         # Generate the path back from the goal

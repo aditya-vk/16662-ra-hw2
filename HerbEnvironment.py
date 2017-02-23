@@ -53,7 +53,7 @@ class HerbEnvironment(object):
                     robot_pos = self.robot.GetActiveDOFValues()
                     robot_pos = config
                     self.robot.SetActiveDOFValues(robot_pos)
-                    if not (self.robot.GetEnv().CheckCollision(self.robot) and self.robot.CheckSelfCollision() == False):
+                    if self.robot.GetEnv().CheckCollision(self.robot) or self.robot.CheckSelfCollision() == False:
                         COLLISION = False
         return numpy.array(config)
 
