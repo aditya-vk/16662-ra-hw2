@@ -76,12 +76,61 @@ class SimpleEnvironment(object):
 		return end_config
 
 	def ShortenPath(self, path, timeout=5.0):
-		
-		# 
-		# TODO: Implement a function which performs path shortening
-		#  on the given path.  Terminate the shortening after the 
-		#  given timout (in seconds).
-		#
+		print('starting path shortening')
+		start_time = time.time()
+
+		current_time = 0
+		p1 = [0,0]
+		p2 = [0,0]
+		i = 0
+		while current_time < timeout and i == 0:
+			print("NOW IN THE FUNCTION LOOP")
+			badIndeces = []
+			pathLength = len(path)
+			p1index = random.randint(0,pathLength-2)
+			p2index = p1index
+			while p2index == p1index or abs(p2index-p1index) <= 1:
+				p2index = random.randint(0,pathLength-2)
+			if p1index > p2index:
+				p1index, p2index = p2index,p1index
+			print(p1index)
+			print(p2index)
+			print(pathLength)
+			p1a = numpy.array(path[p1index])
+			p1b = numpy.array(path[p1index+1])
+			p2a = numpy.array(path[p2index])
+			p2b = numpy.array(path[p2index+1])  
+			
+
+			#choose random interpolation between points
+			p1Vec = (p1b-p1a)
+			p2Vec = (p2b-p2a)
+
+			p1 = p1a + (p1Vec*random.random())
+			p2 = p2a + (p2Vec*random.random())
+
+			#TODO use extend to move to the two random points
+			extender = self.Extend(p1,p2)
+			if extender is not None:
+				if self.ComputeDistance(extender,p2) < .01:
+					#TODO get new path
+					print('shortening path now')
+					print(len(path))
+					badIndeces = [p1index+1,p2index]
+					print(len(path[badIndeces[0]:badIndeces[1]]))
+					if (badIndeces[1]-badIndeces[0]) != 0:
+						path[badIndeces[0]:badIndeces[1]] = []
+					else:
+						path[badIndeces[0]] = []
+					print len(path)
+					path[badIndeces[0]] = p1
+					path.insert(badIndeces[0]+1,p2)
+					print('new path created')
+					print(path)
+
+			#TODO repeate until timeout
+			current_time = time.time()-start_time
+			i = 0
 		return path
 
 
