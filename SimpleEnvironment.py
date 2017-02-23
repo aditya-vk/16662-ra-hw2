@@ -33,15 +33,23 @@ class SimpleEnvironment(object):
 		lower_limits = numpy.array(lower_limits)
 		upper_limits = numpy.array(upper_limits)
 
-		while True:
+		COLLISION = True
+		while COLLISION:
 			# Generate random configuration
-			config = numpy.random.rand(2)*(upper_limits - lower_limits) + lower_limits
-			# Check if it is collision free
-			robot_pos = self.robot.GetTransform()
-			robot_pos[0:2,3] = config
-			self.robot.SetTransform(robot_pos)
-			if self.robot.GetEnv().CheckCollision(self.robot) == False:
-				return numpy.array(config)
+			choice = numpy.random.rand(1)
+			if choice < self.p:
+				config = self.goal_config
+				COLLISION = False
+			else:
+				config = numpy.random.rand(2)*(upper_limits - lower_limits) + lower_limits
+				# Check if it is collision free
+				with self.robot:
+					robot_pos = self.robot.GetTransform()
+					robot_pos[0:2,3] = config
+					self.robot.SetTransform(robot_pos)
+					if self.robot.GetEnv().CheckCollision(self.robot) == False:
+						COLLISION = False
+		return numpy.array(config)
 
 	def ComputeDistance(self, start_config, end_config):
 		return numpy.linalg.norm(end_config - start_config)

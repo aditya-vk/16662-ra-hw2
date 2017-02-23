@@ -23,6 +23,7 @@ class RRTPlanner(object):
         # TO DO: 
         FAR = True
         i = 1
+        print goal_config
         while FAR:
             print "Iteration Number: " + str(i)
             i+=1
@@ -33,14 +34,19 @@ class RRTPlanner(object):
             # Find the nearest(best) vertex and start extending from there
             best_id, best_v = tree.GetNearestVertex(sample)
             validSample = self.planning_env.Extend(best_v,sample)
-            validSample_id = tree.AddVertex(validSample)
-            tree.AddEdge(best_id ,validSample_id)
+            if validSample is None:
+                pass
+            else:
+                validSample_id = tree.AddVertex(validSample)
+                tree.AddEdge(best_id ,validSample_id)
 
-            # Termination Condition
-            if self.planning_env.ComputeDistance(validSample, goal_config) < epsilon:
-                goal_id = tree.AddVertex(goal_config)
-                tree.AddEdge(validSample_id, goal_id)
-                FAR = False
+                # Termination Condition
+                print "Valid Sample is "
+                print validSample
+                if self.planning_env.ComputeDistance(validSample, goal_config) < epsilon:
+                    goal_id = tree.AddVertex(goal_config)
+                    tree.AddEdge(validSample_id, goal_id)
+                    FAR = False
 
         # Generate the path back from the goal
         curr_id = goal_id

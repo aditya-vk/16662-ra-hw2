@@ -40,20 +40,23 @@ class HerbEnvironment(object):
         lower_limits = numpy.array(lower_limits)
         upper_limits = numpy.array(upper_limits)
 
-        while True:
+        COLLISION = True
+        while COLLISION:
             # Generate random configuration
             choice = numpy.random.rand(1)
             if choice < self.p:
-                return self.goal_config
+                config = self.goal_config
+                COLLISION = False
             else:
                 config = numpy.random.rand(len(self.robot.GetActiveDOFIndices()))*(upper_limits - lower_limits) + lower_limits
             # Check if it is collision free
-            with self.robot:
-                robot_pos = self.robot.GetActiveDOFValues()
-                robot_pos = config
-                self.robot.SetActiveDOFValues(robot_pos)
-                if self.robot.GetEnv().CheckCollision(self.robot) and self.robot.CheckSelfCollision() == False:
-                    return numpy.array(config)
+                with self.robot:
+                    robot_pos = self.robot.GetActiveDOFValues()
+                    robot_pos = config
+                    self.robot.SetActiveDOFValues(robot_pos)
+                    if self.robot.GetEnv().CheckCollision(self.robot) and self.robot.CheckSelfCollision() == False:
+                        COLLISION = False
+        return numpy.array(config)
 
 
     
