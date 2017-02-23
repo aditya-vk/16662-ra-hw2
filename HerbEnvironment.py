@@ -77,7 +77,8 @@ class HerbEnvironment(object):
                 robot_pos = self.robot.GetActiveDOFValues()
                 robot_pos = cur_config
                 self.robot.SetActiveDOFValues(robot_pos)
-                if self.robot.GetEnv().CheckCollision(self.robot) == True:
+                ## should we also check self.robot.CheckSelfCollision?
+                if self.robot.GetEnv().CheckCollision(self.robot):
                     return best_config
             #update variables
             best_config = cur_config
