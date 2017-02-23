@@ -21,8 +21,8 @@ class RRTConnectPlanner(object):
         milestone = 10
         while True:
             sample = self.planning_env.GenerateRandomConfiguration()
-            f_vid, f_best = self.ExtendFromTree(ftree,sample,maxDist)
-            r_vid, r_best = self.ExtendFromTree(rtree,sample,maxDist)
+            f_vid, f_best = self.ExtendFromTree(ftree,sample,maxDist, epsilon)
+            r_vid, r_best = self.ExtendFromTree(rtree,sample,maxDist, epsilon)
             if f_best is not None:
                 f_ids = self.AddNodeAndMilestones(ftree, f_vid, f_best, milestone)
                 for id in f_ids:
@@ -39,11 +39,13 @@ class RRTConnectPlanner(object):
                     if(connects):
                         return self.GeneratePlan(ftree, rtree, f_close_vid, id)
 
-    def ExtendFromTree(self, tree, sample, maxDist):
+    def ExtendFromTree(self, tree, sample, maxDist,epsilon):
         vid, vtx = tree.GetNearestVertex(sample)
         vtx_sample_dist = self.planning_env.ComputeDistance(sample, vtx)
-        sample = vtx + (sample - vtx)/vtx_sample_dist * min(vtx_sample_dist, maxDist)
-        return (vid, self.planning_env.Extend(vtx, sample))
+        if(vtx_sample_dist >= epsilon):
+            sample = vtx + (sample - vtx)/vtx_sample_dist * min(vtx_sample_dist, maxDist)
+            return (vid, self.planning_env.Extend(vtx, sample))
+        return (None, None)
 
     def AddNodeAndMilestones(self, tree, parent_id, cfg, milestone):
         start = tree.vertices[parent_id]
