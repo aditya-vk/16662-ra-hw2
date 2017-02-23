@@ -53,7 +53,7 @@ class HerbEnvironment(object):
                     robot_pos = self.robot.GetActiveDOFValues()
                     robot_pos = config
                     self.robot.SetActiveDOFValues(robot_pos)
-                    if self.robot.GetEnv().CheckCollision(self.robot) and self.robot.CheckSelfCollision() == False:
+                    if not (self.robot.GetEnv().CheckCollision(self.robot) and self.robot.CheckSelfCollision() == False):
                         COLLISION = False
         return numpy.array(config)
 
@@ -64,7 +64,6 @@ class HerbEnvironment(object):
 
 
     def Extend(self, start_config, end_config):
-        # return end_config
         epsilon = .01
         dist = self.ComputeDistance(start_config, end_config)
         numSteps = math.ceil(dist / epsilon)

@@ -41,8 +41,6 @@ class RRTPlanner(object):
                 tree.AddEdge(best_id ,validSample_id)
 
                 # Termination Condition
-                print "Valid Sample is "
-                print validSample
                 if self.planning_env.ComputeDistance(validSample, goal_config) < epsilon:
                     goal_id = tree.AddVertex(goal_config)
                     tree.AddEdge(validSample_id, goal_id)
