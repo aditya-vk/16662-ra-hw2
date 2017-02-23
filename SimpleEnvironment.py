@@ -33,14 +33,12 @@ class SimpleEnvironment(object):
 		lower_limits = numpy.array(lower_limits)
 		upper_limits = numpy.array(upper_limits)
 
-		COLLISION = True
-		while COLLISION:
-			# Generate random configuration
-			choice = numpy.random.rand(1)
-			if choice < self.p:
-				config = self.goal_config
-				COLLISION = False
-			else:
+		choice = numpy.random.rand(1)
+		if choice < self.p:
+			config = self.goal_config
+		else:
+			COLLISION = True	
+			while COLLISION:
 				config = numpy.random.rand(2)*(upper_limits - lower_limits) + lower_limits
 				# Check if it is collision free
 				with self.robot:
