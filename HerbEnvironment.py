@@ -80,7 +80,7 @@ class HerbEnvironment(object):
             #update variables
             best_config = cur_config
             i += 1
-        return best_config
+        return end_config
         
     def ShortenPath(self, path, timeout=5.0):
         
