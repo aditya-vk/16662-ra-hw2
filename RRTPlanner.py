@@ -18,8 +18,6 @@ class RRTPlanner(object):
         #  The return path should be an array
         #  of dimension k x n where k is the number of waypoints
         #  and n is the dimension of the robots configuration space
-        print "The vertices in the tree are:"
-        print tree.vertices
         # TO DO: 
         FAR = True
         i = 1
