@@ -1,6 +1,8 @@
 import numpy
 import matplotlib.pyplot as pl
 import math
+import time
+import random
 
 class SimpleEnvironment(object):
 	
@@ -84,7 +86,7 @@ class SimpleEnvironment(object):
 		p2 = [0,0]
 		i = 0
 		while current_time < timeout and i == 0:
-			print("NOW IN THE FUNCTION LOOP")
+			# print("NOW IN THE FUNCTION LOOP")
 			badIndeces = []
 			pathLength = len(path)
 			p1index = random.randint(0,pathLength-2)
@@ -93,9 +95,9 @@ class SimpleEnvironment(object):
 				p2index = random.randint(0,pathLength-2)
 			if p1index > p2index:
 				p1index, p2index = p2index,p1index
-			print(p1index)
-			print(p2index)
-			print(pathLength)
+			# print(p1index)
+			# print(p2index)
+			# print(pathLength)
 			p1a = numpy.array(path[p1index])
 			p1b = numpy.array(path[p1index+1])
 			p2a = numpy.array(path[p2index])
@@ -114,19 +116,19 @@ class SimpleEnvironment(object):
 			if extender is not None:
 				if self.ComputeDistance(extender,p2) < .01:
 					#TODO get new path
-					print('shortening path now')
-					print(len(path))
+					# print('shortening path now')
+					# print(len(path))
 					badIndeces = [p1index+1,p2index]
-					print(len(path[badIndeces[0]:badIndeces[1]]))
+					# print(len(path[badIndeces[0]:badIndeces[1]]))
 					if (badIndeces[1]-badIndeces[0]) != 0:
 						path[badIndeces[0]:badIndeces[1]] = []
 					else:
 						path[badIndeces[0]] = []
-					print len(path)
+					# print len(path)
 					path[badIndeces[0]] = p1
 					path.insert(badIndeces[0]+1,p2)
-					print('new path created')
-					print(path)
+					# print('new path created')
+					# print(path)
 
 			#TODO repeate until timeout
 			current_time = time.time()-start_time

@@ -1,5 +1,7 @@
 import numpy
 import math
+import time
+import random
 
 class HerbEnvironment(object):
 	

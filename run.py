@@ -40,9 +40,18 @@ def main(robot, planning_env, planner):
         verts.append(len(plan))
     strs = [",".join([str(d),str(v),str(t)]) for d,v,t in zip(dists,verts,times)]
     print "\n".join(strs)
-    plan_short = planning_env.ShortenPath(plan)
-    traj = robot.ConvertPlanToTrajectory(plan_short)
+
+    import time
+    print "Displaying original path"
+    traj = robot.ConvertPlanToTrajectory(plan)
     robot.ExecuteTrajectory(traj)
+
+    time.sleep(5)
+
+    print "Displaying shortened path"
+    plan_short = planning_env.ShortenPath(plan)
+    traj_short = robot.ConvertPlanToTrajectory(plan_short)
+    robot.ExecuteTrajectory(traj_short)
 
 if __name__ == "__main__":
     
